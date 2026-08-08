@@ -1,5 +1,10 @@
 package com.example.demo.strategy;
 
-public class SeasonalSaleStrategy {
+public class SeasonalSaleStrategy implements DiscountStrategy {
+
+    @Override
+    public Double calculateDiscount(Double price) {
+        return price * 0.8; // Apply a 20% discount for seasonal sale
+    }
     
 }
