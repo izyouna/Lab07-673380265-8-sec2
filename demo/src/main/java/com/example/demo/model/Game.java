@@ -116,4 +116,16 @@ public class Game {
     public void setDiscountType(String discountType) {
         this.discountType = discountType;
     }
+
+    public String getDiscountName() {
+        com.example.demo.strategy.DiscountContext context = new com.example.demo.strategy.DiscountContext();
+        return context.getDiscountName(this.discountType);
+    }
+
+    public Double getFinalPrice() {
+        com.example.demo.strategy.DiscountContext context = new com.example.demo.strategy.DiscountContext();
+        return context.calculateFinalPrice(this);
+    }
+
 }
+

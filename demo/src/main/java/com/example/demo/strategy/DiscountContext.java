@@ -6,7 +6,7 @@ import com.example.demo.model.Game;
 @Component
 public class DiscountContext {
     public Double calculateFinalPrice(Game game){
-        
+
         // check game is null or not
         if(game == null || game.getPrice() == null || game.getDiscountType() == null){
             throw new IllegalArgumentException("Game, price, and discount type must not be null");
@@ -25,5 +25,14 @@ public class DiscountContext {
         }
 
         return discountStrategy.calculateDiscount(game.getPrice());
+    }
+
+    public String getDiscountName(String discountType) {
+        if (discountType == null) return "ราคาปกติ";
+        return switch (discountType.toUpperCase()) {
+            case "STUDENT" -> "ส่วนลดนักศึกษา (10%)";
+            case "SEASONAL" -> "ส่วนลดเทศกาล (20%)";
+            default -> "ราคาปกติ";
+        };
     }
 }
