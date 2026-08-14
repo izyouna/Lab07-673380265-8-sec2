@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,16 +23,14 @@ public class GameController {
     // Get /games -> Returns a list of all games
     @GetMapping
     public String getAllGames(Model model) {
-        List <Game> games = gameService.getGamesList();
-        model.addAttribute("games", games);
+        model.addAttribute("games", gameService.getGamesList());
         return "games/list";
     }
 
     // Get /games/add -> Adds a new game (for demonstration purposes, this is a simple endpoint)
     @GetMapping("/add")
     public String addGamePage(Model model){
-        Game game = new Game( null, "", "", "", null, null, null, "");
-        model.addAttribute("game", game);
+        model.addAttribute("game",new Game());
         return "games/add";
     }
 
@@ -47,36 +43,30 @@ public class GameController {
 
     // Get /games/edit/{id} -> Returns the edit page for a specific game
     @GetMapping("/edit/{id}")
-    public String editGamePage(Model model, @PathVariable Long id){
-        Game game = gameService.getGameById(id);
-        if (game != null) {
-            model.addAttribute("game", game);
-            return "games/edit";
-        } else {
-            return "redirect:/games";
-        }
+    public String editGamePage(@PathVariable Long id, Model model){
+        model.addAttribute("game", gameService.getGameById(id));
+        return "games/edit";
     }
     
     // Post /games/update/{id} -> Updates a specific game
     @PostMapping("/update/{id}")
     public String updateGame(@PathVariable Long id, @ModelAttribute Game games) {
-        gameService.updateGame(id,games);
+        games.setId(id);
+        gameService.updateGame(games);
         return "redirect:/games";
     }
 
     // Get /games/delete/{id} -> Returns the delete confirmation page for a specific game
     @GetMapping("/delete/{id}")
-    public String deleteGame(@PathVariable Long id ,Model model){
-        Game game = gameService.getGameById(id);
-        model.addAttribute("game",game);
+    public String showDeletePage(@PathVariable Long id, Model model) {
+        model.addAttribute("game", gameService.getGameById(id));
         return "games/delete";
     }
 
     // Post /games/delete/{id} -> Deletes a specific game
     @PostMapping("/delete/{id}")
-    public String  deleteGamePost(@PathVariable Long id){
+    public String deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
-         return "redirect:/games";
+        return "redirect:/games";
     }
-
 }
